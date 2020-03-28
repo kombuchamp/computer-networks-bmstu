@@ -19,7 +19,7 @@ int main() {
 
 	int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 	if (connection == -1) {
-		printf("Couldn't connect");
+		printf("Couldn't connect\n");
 		exit(-1);
 	}
 

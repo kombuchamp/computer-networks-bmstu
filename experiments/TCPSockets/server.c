@@ -23,12 +23,13 @@ int main() {
 	bind(server_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 
 	listen(server_socket, 10);
+	printf("Listening on port 3000...\n");
 
 	int client_socket;
-	client_socket = accept(server_socket, NULL, NULL);
-
-
-	send(client_socket, server_message, sizeof(server_message), 0);
+	while((client_socket = accept(server_socket, NULL, NULL)) >= 0) {
+		send(client_socket, server_message, sizeof(server_message), 0);
+		close(client_socket);
+	}
 
 	// close the connection
 	close(server_socket);
