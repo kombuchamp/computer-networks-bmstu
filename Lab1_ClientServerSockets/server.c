@@ -6,8 +6,10 @@
 
 #include <netinet/in.h>
 
+#include "cipher_util.h"
+
 int main() {
-	char server_message[256];
+	char server_message[256], ciphered_server_message[256];
 	char client_message[256];
 
 	// create server socket
@@ -30,9 +32,11 @@ int main() {
 	while((client_socket = accept(server_socket, NULL, NULL)) >= 0) {
 		printf("Client connected. Enter the message:\n");
 		scanf("%s", server_message);
-		send(client_socket, server_message, sizeof(server_message), 0);
+		cipher_msg(server_message, HARDCODED_KEY, ciphered_server_message);
+		printf("Ciphered message: %s. Sending to client...\n", ciphered_server_message);
+		send(client_socket, ciphered_server_message, sizeof(ciphered_server_message), 0);
 		recv(client_socket, client_message, sizeof(client_message), 0);
-		printf("Client said: %s", client_message);
+		printf("Client responded with: %s\n", client_message);
 		close(client_socket);
 	}
 

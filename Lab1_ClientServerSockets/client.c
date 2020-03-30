@@ -19,23 +19,23 @@ int main() {
 	server_address.sin_port = htons(3000);
 	server_address.sin_addr.s_addr = INADDR_ANY; // localhost
 
+	printf("Connecting to server...\n");
+
 	int connection = connect(network_socket, (struct sockaddr *)&server_address, sizeof(server_address));
 	if (connection == -1) {
 		printf("Couldn't connect\n");
 		exit(-1);
 	}
 
-	// Receive data from server
-	char server_response[256];
+	// receive data from server
+	char server_response[256], deciphered_server_response[256];
 	recv(network_socket, &server_response, sizeof(server_response), 0);
-	printf("!!!");
-	cipher_msg("","","");
-	send(network_socket, server_response, sizeof(server_response), 0);
-
-	// print server rwsponse
-	printf("Server response: %s\n", server_response);
-
-	// Close the connection
+	printf("Received message: %s. Deciphering...\n", server_response);
+	decipher_msg(server_response, HARDCODED_KEY, deciphered_server_response);
+	printf("Deciphering complete: %s. Sending message to server...\n", deciphered_server_response);
+	send(network_socket, deciphered_server_response, sizeof(deciphered_server_response), 0);
+	printf("Done\n");
+	// close the connection
 	close(network_socket);
 
 	return 0;
