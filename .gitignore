@@ -1,4 +1,6 @@
 *.swo
 *.o
+*/node_modules
 
+.env
 .vscode
